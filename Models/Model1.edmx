@@ -1,0 +1,443 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="Хранилище PanasenkoMusicShopModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="admin">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="password" Type="varchar" MaxLength="50" />
+          <Property Name="email" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Country">
+          <Key>
+            <PropertyRef Name="ID_Countre" />
+          </Key>
+          <Property Name="ID_Countre" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Discs">
+          <Key>
+            <PropertyRef Name="ID_Discs" />
+          </Key>
+          <Property Name="ID_Discs" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name_Discs" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="ID_Base_Song" Type="int" Nullable="false" />
+          <Property Name="Executor" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Time_Sound" Type="time" Precision="7" Nullable="false" />
+          <Property Name="Nomber_Song" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Executor">
+          <Key>
+            <PropertyRef Name="ID_Executor" />
+          </Key>
+          <Property Name="ID_Executor" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name_Executor" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Yead_Of_Start" Type="date" Nullable="false" />
+          <Property Name="Creative_Path" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="ID_Countre" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Group">
+          <Key>
+            <PropertyRef Name="ID_Group" />
+          </Key>
+          <Property Name="ID_Group" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name_Group" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Yead_Of_Start" Type="date" Nullable="false" />
+          <Property Name="Creative_Path" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="ID_Countre" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Song">
+          <Key>
+            <PropertyRef Name="ID_Base_Song" />
+          </Key>
+          <Property Name="ID_Base_Song" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Author_Of_The_Text" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Author_Of_The_Music" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Time_Sound" Type="time" Precision="7" Nullable="false" />
+          <Property Name="ID_Executor" Type="int" Nullable="false" />
+          <Property Name="ID_Group" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <Association Name="FK_Discs_Song">
+          <End Role="Song" Type="Self.Song" Multiplicity="1" />
+          <End Role="Discs" Type="Self.Discs" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Song">
+              <PropertyRef Name="ID_Base_Song" />
+            </Principal>
+            <Dependent Role="Discs">
+              <PropertyRef Name="ID_Base_Song" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Executor_Country">
+          <End Role="Country" Type="Self.Country" Multiplicity="1" />
+          <End Role="Executor" Type="Self.Executor" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Country">
+              <PropertyRef Name="ID_Countre" />
+            </Principal>
+            <Dependent Role="Executor">
+              <PropertyRef Name="ID_Countre" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Group_Country">
+          <End Role="Country" Type="Self.Country" Multiplicity="1" />
+          <End Role="Group" Type="Self.Group" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Country">
+              <PropertyRef Name="ID_Countre" />
+            </Principal>
+            <Dependent Role="Group">
+              <PropertyRef Name="ID_Countre" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Song_Executor">
+          <End Role="Executor" Type="Self.Executor" Multiplicity="1" />
+          <End Role="Song" Type="Self.Song" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Executor">
+              <PropertyRef Name="ID_Executor" />
+            </Principal>
+            <Dependent Role="Song">
+              <PropertyRef Name="ID_Executor" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Song_Group">
+          <End Role="Group" Type="Self.Group" Multiplicity="1" />
+          <End Role="Song" Type="Self.Song" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Group">
+              <PropertyRef Name="ID_Group" />
+            </Principal>
+            <Dependent Role="Song">
+              <PropertyRef Name="ID_Group" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Хранилище PanasenkoMusicShopModelContainer">
+          <EntitySet Name="admin" EntityType="Self.admin" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Country" EntityType="Self.Country" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Discs" EntityType="Self.Discs" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Executor" EntityType="Self.Executor" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Group" EntityType="Self.Group" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Song" EntityType="Self.Song" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Discs_Song" Association="Self.FK_Discs_Song">
+            <End Role="Song" EntitySet="Song" />
+            <End Role="Discs" EntitySet="Discs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Executor_Country" Association="Self.FK_Executor_Country">
+            <End Role="Country" EntitySet="Country" />
+            <End Role="Executor" EntitySet="Executor" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Group_Country" Association="Self.FK_Group_Country">
+            <End Role="Country" EntitySet="Country" />
+            <End Role="Group" EntitySet="Group" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Song_Executor" Association="Self.FK_Song_Executor">
+            <End Role="Executor" EntitySet="Executor" />
+            <End Role="Song" EntitySet="Song" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Song_Group" Association="Self.FK_Song_Group">
+            <End Role="Group" EntitySet="Group" />
+            <End Role="Song" EntitySet="Song" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="PanasenkoMusicShopModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="admin">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="Country">
+          <Key>
+            <PropertyRef Name="ID_Countre" />
+          </Key>
+          <Property Name="ID_Countre" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Executor" Relationship="Self.FK_Executor_Country" FromRole="Country" ToRole="Executor" />
+          <NavigationProperty Name="Group" Relationship="Self.FK_Group_Country" FromRole="Country" ToRole="Group" />
+        </EntityType>
+        <EntityType Name="Discs">
+          <Key>
+            <PropertyRef Name="ID_Discs" />
+          </Key>
+          <Property Name="ID_Discs" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name_Discs" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ID_Base_Song" Type="Int32" Nullable="false" />
+          <Property Name="Executor" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Time_Sound" Type="Time" Nullable="false" Precision="7" />
+          <Property Name="Nomber_Song" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Song" Relationship="Self.FK_Discs_Song" FromRole="Discs" ToRole="Song" />
+        </EntityType>
+        <EntityType Name="Executor">
+          <Key>
+            <PropertyRef Name="ID_Executor" />
+          </Key>
+          <Property Name="ID_Executor" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name_Executor" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Yead_Of_Start" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Creative_Path" Type="String" MaxLength="500" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ID_Countre" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Country" Relationship="Self.FK_Executor_Country" FromRole="Executor" ToRole="Country" />
+          <NavigationProperty Name="Song" Relationship="Self.FK_Song_Executor" FromRole="Executor" ToRole="Song" />
+        </EntityType>
+        <EntityType Name="Group">
+          <Key>
+            <PropertyRef Name="ID_Group" />
+          </Key>
+          <Property Name="ID_Group" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name_Group" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Yead_Of_Start" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Creative_Path" Type="String" MaxLength="500" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ID_Countre" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Country" Relationship="Self.FK_Group_Country" FromRole="Group" ToRole="Country" />
+          <NavigationProperty Name="Song" Relationship="Self.FK_Song_Group" FromRole="Group" ToRole="Song" />
+        </EntityType>
+        <EntityType Name="Song">
+          <Key>
+            <PropertyRef Name="ID_Base_Song" />
+          </Key>
+          <Property Name="ID_Base_Song" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Author_Of_The_Text" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Author_Of_The_Music" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Time_Sound" Type="Time" Nullable="false" Precision="7" />
+          <Property Name="ID_Executor" Type="Int32" Nullable="false" />
+          <Property Name="ID_Group" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Discs" Relationship="Self.FK_Discs_Song" FromRole="Song" ToRole="Discs" />
+          <NavigationProperty Name="Executor" Relationship="Self.FK_Song_Executor" FromRole="Song" ToRole="Executor" />
+          <NavigationProperty Name="Group" Relationship="Self.FK_Song_Group" FromRole="Song" ToRole="Group" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <Association Name="FK_Executor_Country">
+          <End Role="Country" Type="Self.Country" Multiplicity="1" />
+          <End Role="Executor" Type="Self.Executor" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Country">
+              <PropertyRef Name="ID_Countre" />
+            </Principal>
+            <Dependent Role="Executor">
+              <PropertyRef Name="ID_Countre" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Group_Country">
+          <End Role="Country" Type="Self.Country" Multiplicity="1" />
+          <End Role="Group" Type="Self.Group" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Country">
+              <PropertyRef Name="ID_Countre" />
+            </Principal>
+            <Dependent Role="Group">
+              <PropertyRef Name="ID_Countre" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Discs_Song">
+          <End Role="Song" Type="Self.Song" Multiplicity="1" />
+          <End Role="Discs" Type="Self.Discs" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Song">
+              <PropertyRef Name="ID_Base_Song" />
+            </Principal>
+            <Dependent Role="Discs">
+              <PropertyRef Name="ID_Base_Song" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Song_Executor">
+          <End Role="Executor" Type="Self.Executor" Multiplicity="1" />
+          <End Role="Song" Type="Self.Song" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Executor">
+              <PropertyRef Name="ID_Executor" />
+            </Principal>
+            <Dependent Role="Song">
+              <PropertyRef Name="ID_Executor" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Song_Group">
+          <End Role="Group" Type="Self.Group" Multiplicity="1" />
+          <End Role="Song" Type="Self.Song" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Group">
+              <PropertyRef Name="ID_Group" />
+            </Principal>
+            <Dependent Role="Song">
+              <PropertyRef Name="ID_Group" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="PanasenkoMusicShopEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="admin" EntityType="Self.admin" />
+          <EntitySet Name="Country" EntityType="Self.Country" />
+          <EntitySet Name="Discs" EntityType="Self.Discs" />
+          <EntitySet Name="Executor" EntityType="Self.Executor" />
+          <EntitySet Name="Group" EntityType="Self.Group" />
+          <EntitySet Name="Song" EntityType="Self.Song" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
+          <AssociationSet Name="FK_Executor_Country" Association="Self.FK_Executor_Country">
+            <End Role="Country" EntitySet="Country" />
+            <End Role="Executor" EntitySet="Executor" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Group_Country" Association="Self.FK_Group_Country">
+            <End Role="Country" EntitySet="Country" />
+            <End Role="Group" EntitySet="Group" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Discs_Song" Association="Self.FK_Discs_Song">
+            <End Role="Song" EntitySet="Song" />
+            <End Role="Discs" EntitySet="Discs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Song_Executor" Association="Self.FK_Song_Executor">
+            <End Role="Executor" EntitySet="Executor" />
+            <End Role="Song" EntitySet="Song" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Song_Group" Association="Self.FK_Song_Group">
+            <End Role="Group" EntitySet="Group" />
+            <End Role="Song" EntitySet="Song" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Хранилище PanasenkoMusicShopModelContainer" CdmEntityContainer="PanasenkoMusicShopEntities">
+          <EntitySetMapping Name="admin">
+            <EntityTypeMapping TypeName="PanasenkoMusicShopModel.admin">
+              <MappingFragment StoreEntitySet="admin">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="password" ColumnName="password" />
+                <ScalarProperty Name="email" ColumnName="email" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Country">
+            <EntityTypeMapping TypeName="PanasenkoMusicShopModel.Country">
+              <MappingFragment StoreEntitySet="Country">
+                <ScalarProperty Name="ID_Countre" ColumnName="ID_Countre" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Discs">
+            <EntityTypeMapping TypeName="PanasenkoMusicShopModel.Discs">
+              <MappingFragment StoreEntitySet="Discs">
+                <ScalarProperty Name="ID_Discs" ColumnName="ID_Discs" />
+                <ScalarProperty Name="Name_Discs" ColumnName="Name_Discs" />
+                <ScalarProperty Name="ID_Base_Song" ColumnName="ID_Base_Song" />
+                <ScalarProperty Name="Executor" ColumnName="Executor" />
+                <ScalarProperty Name="Time_Sound" ColumnName="Time_Sound" />
+                <ScalarProperty Name="Nomber_Song" ColumnName="Nomber_Song" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Executor">
+            <EntityTypeMapping TypeName="PanasenkoMusicShopModel.Executor">
+              <MappingFragment StoreEntitySet="Executor">
+                <ScalarProperty Name="ID_Executor" ColumnName="ID_Executor" />
+                <ScalarProperty Name="Name_Executor" ColumnName="Name_Executor" />
+                <ScalarProperty Name="Yead_Of_Start" ColumnName="Yead_Of_Start" />
+                <ScalarProperty Name="Creative_Path" ColumnName="Creative_Path" />
+                <ScalarProperty Name="ID_Countre" ColumnName="ID_Countre" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Group">
+            <EntityTypeMapping TypeName="PanasenkoMusicShopModel.Group">
+              <MappingFragment StoreEntitySet="Group">
+                <ScalarProperty Name="ID_Group" ColumnName="ID_Group" />
+                <ScalarProperty Name="Name_Group" ColumnName="Name_Group" />
+                <ScalarProperty Name="Yead_Of_Start" ColumnName="Yead_Of_Start" />
+                <ScalarProperty Name="Creative_Path" ColumnName="Creative_Path" />
+                <ScalarProperty Name="ID_Countre" ColumnName="ID_Countre" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Song">
+            <EntityTypeMapping TypeName="PanasenkoMusicShopModel.Song">
+              <MappingFragment StoreEntitySet="Song">
+                <ScalarProperty Name="ID_Base_Song" ColumnName="ID_Base_Song" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Author_Of_The_Text" ColumnName="Author_Of_The_Text" />
+                <ScalarProperty Name="Author_Of_The_Music" ColumnName="Author_Of_The_Music" />
+                <ScalarProperty Name="Time_Sound" ColumnName="Time_Sound" />
+                <ScalarProperty Name="ID_Executor" ColumnName="ID_Executor" />
+                <ScalarProperty Name="ID_Group" ColumnName="ID_Group" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="PanasenkoMusicShopModel.sysdiagrams">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Нет" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
